@@ -578,7 +578,12 @@ class PostgresTarget(SQLInterface):
             sql.SQL('SELECT description FROM pg_description WHERE objoid = {}::regclass;').format(
                 sql.Literal(
                     '"{}"."{}"'.format(self.postgres_schema, table_name))))
-        comment = cur.fetchone()[0]
+        result = cur.fetchone()
+
+        comment = None
+
+        if result:
+            comment = result[0]
 
         if comment:
             try:
